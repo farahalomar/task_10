@@ -1,21 +1,49 @@
 {% extends "base.html" %}
-{% load crispy_forms_tags %}
 
-{% block title %}Create{% endblock title %}
+{% block title %}Detail{% endblock title %}
 
 {% block content %}
-    
+
 <br>
 <div class="card">
-  <h5 class="card-header">Create Restaurant</h5>
+  <h5 class="card-header">Restaurant Info</h5>
+  {% if restaurant.logo %}
+    <img class="card-img-top" src="{{restaurant.logo.url}}" alt="Hey Noob, look at me...">
+  {% endif %}
   <div class="card-body">
-    <p class="card-text">
-        <form action="{% url 'restaurant-create' %}" method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{form|crispy}}
-            <input type="submit" value="Create" class="btn btn-outline-success">
-        </form>
-    </p>
+    <h5 class="card-title">{{restaurant.name}}</h5>
+    <p class="card-text">{{restaurant.description|linebreaks}}</p>
+    <p class="card-text">Opening Time: {{restaurant.opening_time}}</p>
+    <p class="card-text">Closing Time: {{restaurant.closing_time}}</p>
+
+    <p class="card-text">Menu</p>
+    
+
+    {% for i in items %}
+
+    <p class="card-text">name: {{i.name}}</p>
+    <p class="card-text">description: {{i.description}}</p>
+    <p class="card-text">price = {{i.price}}</p>
+
+
+    
+      
+    {% endfor %}
+      
+
+    <div class="row text-center">
+        <div class="col-md-6">
+            <a href="{% url 'restaurant-update' restaurant.id %}" class="btn btn-outline-primary btn-block">Update</a>
+        </div>
+        <div class="col-md-6">
+            <a href="{% url 'restaurant-delete' restaurant.id %}" class="btn btn-outline-danger btn-block">Delete</a>
+        </div>
+        <div class="col-md-6">
+            <a href="{% url 'item-create' restaurant.id %}" class="btn btn-outline-danger btn-block">create Item</a>
+        </div>
+
+
+    </div>
   </div>
 </div>
 {% endblock content %}
